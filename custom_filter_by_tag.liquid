@@ -1,0 +1,71 @@
+    <!-- custom filter products by tag  -->
+          {%- comment -%}
+            <div class="collection-sidebar__group--1">
+              <div class="collection-sidebar__group">
+                <button type="button" class="collapsible-trigger collapsible-trigger-btn collapsible--auto-height tag-list__header is-open" data-controls="CollectionSidebar-1" data-collapsible-id="filter-price" aria-expanded="true">
+                  <span class="collapsible-trigger__layout collapsible-trigger__layout--inline">
+                    <span>Style</span>
+                      <span class="collapsible-trigger__icon collapsible-trigger__icon--open" role="presentation">
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-chevron-down" viewBox="0 0 28 16"><path d="M1.57 1.59l12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none" fill-rule="evenodd"></path>
+                        </svg>
+                      </span>
+                  </span>
+                </button>
+                <div data-id="CollectionSidebar-1" data-collapsible-id="filter-price"  class="collapsible-content collapsible-content--all is-open" style="height: auto;">
+                  <div class="collapsible-content__inner">
+                    <ul class="tag_group no-bullets">
+                      {% for tag in collection.all_tags %}
+                        {%- if tag contains 'F_' -%}
+                          {%- assign variant_hundle = tag | remove_first: "F_" -%}
+                          {%- assign variant_hundle_arr = variant_hundle  -%}
+                            {% for features in variant_hundle_arr %}
+                                <li class="tag filter_tag">
+                                  {{ variant_hundle | link_to_add_tag: tag }}
+                                <span class="tag_counter">
+                                  ({{ tag | size }}) 
+                                <span>
+                                </li>
+                            {% endfor %}
+                        {%- endif -%}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="collection-sidebar__group--1">
+              <div class="collection-sidebar__group">
+                <button type="button" class="collapsible-trigger collapsible-trigger-btn collapsible--auto-height tag-list__header is-open" data-controls="CollectionSidebar-1" data-collapsible-id="filter-price" aria-expanded="true">
+                  <span class="collapsible-trigger__layout collapsible-trigger__layout--inline">
+                    <span>Product Features</span>
+                      <span class="collapsible-trigger__icon collapsible-trigger__icon--open" role="presentation">
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-chevron-down" viewBox="0 0 28 16"><path d="M1.57 1.59l12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none" fill-rule="evenodd"></path>
+                        </svg>
+                      </span>
+                  </span>
+                </button>
+                <div data-id="CollectionSidebar-1" data-collapsible-id="filter-price"  class="collapsible-content collapsible-content--all is-open" style="height: auto;">
+                  <div class="collapsible-content__inner">
+                    <ul class="tag_group no-bullets">
+                      {% for tag in collection.all_tags %}
+                        {%- if tag contains 'S_' -%}
+                          {%- assign variant_hundle = tag | remove_first: "S_" -%}
+                          {%- assign variant_hundle_arr = variant_hundle  -%}
+                            {% for features in variant_hundle_arr %}
+                                <li class="tag filter_tag">
+                                  {{ variant_hundle | link_to_add_tag: tag }}
+                                <span class="tag_counter">
+                                  ({{ tag | size }}) 
+                                <span>
+                                </li>
+                                  
+                            {% endfor %}
+                        {%- endif -%}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endcomment -%}
