@@ -1,0 +1,80 @@
+<div>
+  <label for="sort-by">Sort by</label> 
+  <select id="sort-by">
+    <option value="manual">Featured</option>
+    <option value="price-ascending">Price: Low to High</option>
+    <option value="price-descending">Price: High to Low</option>
+    <option value="title-ascending">A-Z</option>
+    <option value="title-descending">Z-A</option>
+    <option value="created-ascending">Oldest to Newest</option>
+    <option value="created-descending">Newest to Oldest</option>
+    <option value="best-selling">Best Selling</option>
+  </select>
+</div>
+
+<script>
+document.querySelector('#sort-by').addEventListener('change', function() {
+  const urlSearchParams = new URLSearchParams(
+    window.location.search.indexOf("sort_by") > -1
+    ? window.location.search.replace(/sort_by/gi,"")
+    : window.location.search
+  );
+  urlSearchParams.set(this.name, this.value);
+
+  window.location = `?sort_by${urlSearchParams}`;
+});
+
+Shopify.queryParams = {};
+if (location.search.length) {
+  for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+    aKeyValue = aCouples[i].split('=');
+    if (aKeyValue.length > 1) {
+      Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+    }
+  }
+} 
+</script>
+
+<div id="sort" class="custom_sorting">
+    <div class="sort_label">Sort by:</div>
+    <select name="sort_by" id="sort-by">
+      <option value="title-ascending">Product Name</option>
+      <option value="created-descending">Newest to Oldest</option>
+      <option value="best-selling">Best Selling</option>
+      <option value="manual">Most Viewed</option>
+      <option value="price-ascending">Price: Low to High</option>
+      <option value="price-descending">Price: High to Low</option>
+    </select>
+</div>
+
+<script>
+  const sorter = document.querySelector('#sort-by');
+
+  if (sorter) {
+      sorter.addEventListener('change', function () {
+          const urlSearchParams = new URLSearchParams(window.location.search);
+
+          urlSearchParams.set(this.name, this.value);
+
+          window.location = `?${urlSearchParams}`;
+      });
+  }
+
+  if (window.location.search.length) {
+      sortBy = new URLSearchParams(window.location.search).get('sort_by');
+      if (sorter) {
+          sorter.value = sortBy
+      }
+  }
+</script>
+
+<style>
+  .custom_sorting {
+    display: flex;
+  }
+  .sort_label {
+    font-weight: 600;
+    min-width: fit-content;
+    margin: 7px 1px;
+  }
+</style>

@@ -1,0 +1,47 @@
+<style>
+    .wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 220px));
+      grid-gap: 20px;
+    }
+    .box {
+      background-color: #ebebeb;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  </style>
+  <script>
+    const requestShopifyProducts = async () => {
+      const shopifyURL = 'https://www.greats.com'; // full url, no trailing slash
+      const shopifyURL = 'http://www.aerocoast.com/'; // full url, no trailing slash
+      const response   = await fetch(shopifyURL + '/products.json');
+      const json       = await response.json();
+      var htmlProducts = '';
+  
+      for (key in json.products) {
+        var productTitle = json.products[key].title;
+        var productURL   = shopifyURL + '/products/' + json.products[key].handle;
+  
+        htmlProducts += '<div class="box"><h3>' + productTitle + '</h3>';
+  
+        var first_image = true;
+        for (key2 in json.products[key].images) {
+          if (first_image) { // cheap way to only get first img url
+            htmlProducts += '<img src="' + json.products[key].images[key2].src + '" width="200">';
+            first_image = false;
+          }
+        }
+  
+        htmlProducts += '<p><a href="' + productURL + '" target="_blank">Buy this Product</a></p>';
+        htmlProducts += '</div>';
+      }
+  
+      document.getElementById("products").innerHTML = htmlProducts;
+    }
+    requestShopifyProducts();
+  </script>
+  </head>
+  <body>
+  
+    <h1>Shopify Products</h1>
+    <div id="products" class="wrapper"></div>

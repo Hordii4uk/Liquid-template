@@ -1,0 +1,71 @@
+<div id="sort-by-container" class="collection__toolbar-item"></div>
+
+<script>
+  var currentURL = new URL(window.location);
+  var currentParams = currentURL.searchParams.get('sort_by');
+  var urlSearchParams = new URLSearchParams(
+    window.location.search.indexOf("sort_by") > -1
+    ? window.location.search.replace(/sort_by/gi,"")
+    : window.location.search
+  );
+
+  var render = function (template, node) {
+    node.innerHTML = template;
+
+    node.querySelector('#sort-by').addEventListener('change', function() {
+      urlSearchParams.set(this.name, this.value);
+      window.location = `?sort_by${urlSearchParams}`;
+    });
+  };
+
+  var SortOptions = [
+    {
+      label: 'Featured',
+      value: 'manual'
+    }, 
+    {
+      label: 'Price: Low to High',
+      value: 'price-ascending'
+    }, 
+    {
+      label: 'Price: High to Low',
+      value: 'price-descending'
+    }, 
+    {
+      label: 'Oldest to Newest',
+      value: 'created-ascending'
+    }, 
+    {
+      label: 'Newest to Oldest',
+      value: 'created-descending'
+    }, 
+    {
+      label: 'Most Relevant',
+      value: 'best-selling'
+    }];
+
+    var template = `
+    <div>
+      <label for="sort-by"></label> 
+      <select id="sort-by">
+        ${SortOptions.map((item) =>
+          `<option value="${item.value}" ${currentParams === item.value ? 'selected':''} class="item_option">${item.label}</option>`
+        ).join('')}
+      </select>
+    </div>
+  `;
+
+  render(template, document.querySelector('#sort-by-container'));
+  </script>
+
+
+
+
+<!-- 
+   simplest and best. No external JS required
+<select class="custom-select" name="sort_by" onchange="javascript:location.href = window.location.href.split('?')[0] + `?sort_by=${this.value}`;">
+  {% for option in collection.sort_options %}
+      <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+      <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+  {% endfor %}
+</select> -->
