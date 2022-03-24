@@ -1,0 +1,71 @@
+
+
+
+<div class="box">
+  <div class="container-2">
+    <span class="site-nav__link--icon">
+      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-search" viewBox="0 0 64 64"><defs><style>.cls-1{fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:2px}</style></defs><path class="cls-1" d="M47.16 28.58A18.58 18.58 0 1 1 28.58 10a18.58 18.58 0 0 1 18.58 18.58zM54 54L41.94 42"></path></svg>
+    </span>
+    <input id="search" placeholder="Search..." type="search">
+  </div>
+</div>
+
+
+<style>
+  .container-2{
+    width: 300px;
+    vertical-align: middle;
+    white-space: nowrap;
+    position: relative;
+  }
+  .container-2 input#search{
+    width: 45px;
+    height: 45px;
+    background: #ffffff;
+    border: none;
+    float: right;
+    color: #5a5a5a;
+    padding-left: 33px;
+    /* -webkit-border-radius: 5px; */
+    /* -moz-border-radius: 5px; */
+    /* color: #fff; */
+
+    -webkit-transition: width .55s ease;
+    -moz-transition: width .55s ease;
+    -ms-transition: width .55s ease;
+    -o-transition: width .55s ease;
+    transition: width .55s ease;
+  }
+  .container-2 input#search::-webkit-input-placeholder {
+    color: #65737e;
+  }
+  .container-2 input#search:-moz-placeholder { /* Firefox 18- */
+    color: #65737e;  
+  }
+  .container-2 input#search::-moz-placeholder {  /* Firefox 19+ */
+    color: #65737e;  
+  }
+  .container-2 input#search:-ms-input-placeholder {  
+    color: #65737e;  
+  }
+  .container-2 .icon{
+    position: absolute;
+    top: 50%;
+    margin-left: 250px;
+    margin-top: 10px;
+    color: #4f5b66;
+  }
+  .container-2 input#search:focus, .container-2 input#search:active{
+    outline:none;
+    width: 300px;
+    border: 1px solid #5a5a5a;
+  }
+  .container-2:hover input#search{
+    width: 300px;
+    border: 1px solid #5a5a5a;
+  }
+  .container-2:hover .icon{
+    /* color: #93a2ad; */
+    /* background: #f5f5f5; */
+  }
+</style>
