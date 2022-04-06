@@ -1,0 +1,130 @@
+{% if localization.available_countries.size > 1 %}
+  <localization-form class="custom_currency">
+    {% form 'localization' %}
+      <div class="disclosure">
+        <button type="button" class="disclosure__button currency_icon" aria-expanded="false" aria-controls="CountryList">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.252 10C4.08416 10.6534 3.99949 11.3254 4 12C4 12.69 4.088 13.36 4.252 14H7.1C6.96518 12.6701 6.96518 11.3299 7.1 10H4.252ZM5.07 8H7.416C7.682 6.783 8.066 5.693 8.537 4.786C7.08518 5.48542 5.87722 6.60523 5.07 8V8ZM19.748 10H16.9C17.0348 11.3299 17.0348 12.6701 16.9 14H19.748C19.912 13.36 20 12.69 20 12C20 11.31 19.912 10.64 19.748 10ZM18.93 8C18.1228 6.60523 16.9148 5.48542 15.463 4.786C15.935 5.693 16.318 6.783 16.584 8H18.93ZM9.112 10C9.03708 10.664 8.99968 11.3318 9 12C9 12.685 9.038 13.355 9.112 14H14.888C15.0386 12.6709 15.0386 11.3291 14.888 10H9.112ZM9.47 8H14.53C14.348 7.2483 14.0855 6.51841 13.747 5.823C13.119 4.568 12.447 4 12 4C11.552 4 10.881 4.568 10.253 5.823C9.938 6.455 9.673 7.19 9.47 8ZM5.07 16C5.87722 17.3948 7.08518 18.5146 8.537 19.214C8.065 18.307 7.682 17.217 7.416 16H5.07V16ZM18.93 16H16.584C16.318 17.217 15.934 18.307 15.463 19.214C16.9148 18.5146 18.1228 17.3948 18.93 16ZM9.47 16C9.673 16.81 9.938 17.545 10.253 18.177C10.881 19.432 11.553 20 12 20C12.448 20 13.119 19.432 13.747 18.177C14.062 17.545 14.327 16.81 14.53 16H9.47V16ZM12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22Z" fill="#5A5A5A"/>
+          </svg>
+        </button>
+        <ul id="CountryList" role="list" class="disclosure__list currency_list" hidden="true">
+          <li class="disclosure__item" tabindex="-1">
+            <a href="#" data-value="GB" class="js-no-transition">
+              GBP £
+            </a>
+          </li>
+          <li class="disclosure__item" tabindex="-1">
+            <a href="#" data-value="AU" class="js-no-transition">
+              AUD $
+            </a>
+          </li>
+          <li class="disclosure__item" tabindex="-1">
+            <a href="#" data-value="FR" class="js-no-transition">
+              EUR €
+            </a>
+          </li>
+          <li class="disclosure__item" tabindex="-1">
+            <a href="#" data-value="US" class="js-no-transition">
+              USD $
+            </a>
+          </li>
+        </ul>
+        <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+      </div>
+    {% endform %}
+  </localization-form>
+{% endif %}
+
+<script>
+  // switch currency 
+class LocalizationForm extends HTMLElement {
+  constructor() {
+    super();
+    this.elements = {
+      input: this.querySelector('input[name="language_code"], input[name="country_code"]'),
+      button: this.querySelector('button'),
+      panel: this.querySelector('ul'),
+    };
+    this.elements.button.addEventListener('click', this.openSelector.bind(this));
+    this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+    this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+
+    this.querySelectorAll('a').forEach(item => item.addEventListener('click', this.onItemClick.bind(this)));
+  }
+
+  hidePanel() {
+    this.elements.button.setAttribute('aria-expanded', 'false');
+    this.elements.panel.setAttribute('hidden', true);
+  }
+
+  onContainerKeyUp(event) {
+    if (event.code.toUpperCase() !== 'ESCAPE') return;
+
+    this.hidePanel();
+    this.elements.button.focus();
+  }
+
+  onItemClick(event) {
+    event.preventDefault();
+    const form = this.querySelector('form');
+    this.elements.input.value = event.currentTarget.dataset.value;
+    if (form) form.submit();
+  }
+
+  openSelector() {
+    this.elements.button.focus();
+    this.elements.panel.toggleAttribute('hidden');
+    this.elements.button.setAttribute('aria-expanded', (this.elements.button.getAttribute('aria-expanded') === 'false').toString());
+  }
+
+  closeSelector(event) {
+    const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+    if (event.relatedTarget === null || shouldClose) {
+      this.hidePanel();
+    }
+  }
+}
+
+customElements.define('localization-form', LocalizationForm);
+
+</script>
+
+<style>
+  
+  .custom_currency .currency_list {
+      display: none;
+  }
+  .custom_currency:hover .currency_list {
+      display: block;
+  }
+  .disclosure__item:hover {
+      text-decoration: underline;
+  }
+  .custom_currency {
+      position: relative;
+      cursor: pointer;
+  }
+  .currency_list {
+      position: absolute;
+      list-style: none;
+      width: 80px;
+      background: whitesmoke;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      text-align: -webkit-center;
+      top: 34px;
+      left: -20px;
+  }
+
+  .currency_icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 10px;
+  }
+
+  ul#CurrencyList-toolbar {
+      position: absolute;
+      display: block;
+  }
+</style>
