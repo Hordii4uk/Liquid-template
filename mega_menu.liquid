@@ -1,0 +1,374 @@
+{%- comment -%}
+{%- assign has_dropdown = false -%}
+{%- assign is_megamenu = false -%}
+  {% if link.levels > 0 %}
+  {%- assign has_dropdown = true -%}
+    {% if link.levels > 0 %}
+    {%- assign is_megamenu = true -%}
+    {% endif %}
+  {% endif %}
+
+{% if is_megamenu and link.url contains '/collections/' %}
+{%- assign lang_code_string = request.locale.iso_code | prepend: '/' | downcase -%}
+{%- assign collection_handle = link.url | remove: '/collections/' | remove: lang_code_string -%}
+{%- assign collection_drop = collections[collection_handle] -%}
+{%- assign isCollection = true -%}
+{% endif %}
+
+{%- endcomment -%}
+
+<nav  style="z-index: 10;">
+  <ul class="menu">
+    {% assign linklist = section.settings.nav_menu %}
+    {% for link in linklists[linklist].links %}
+    {% assign child_list_handle = link.title | handle %}
+    {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+     <!-- lev_1_nasted nav  -->
+          <li class="menu-item">
+            {{ link.title }}
+            <!-- submenu  -->
+              <ul class="submenu">
+                    {% for child_link in linklists[child_list_handle].links %}
+                      {% assign grand_child_list_handle = child_link.title | handle %}
+                      {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
+                        <!-- lev_2_item with nasted nav  -->
+                          <li class="submenu-item">
+                            
+                            <ul class="submenu-top">
+                              <!-- col with image  -->
+                                <li class="submenu-top-item thumb-list">
+                                  <a href="#" class="submenu-title">{{ child_link.title }}</a>
+                                  {% for grand_child_link in linklists[grand_child_list_handle].links %}
+                                     
+                                    <ul class="submenu-list">
+                                        <li>
+                                            <img class="submenu-thumbnail" src="https://picsum.photos/id/1067/32/32" alt="City breaks">
+                                            <a href="#">{{ grand_child_link.title }}</a>
+                                        </li>
+                                        <!-- <li>
+                                            <img class="submenu-thumbnail" src="https://picsum.photos/id/173/32/32" alt="Adventure tours">
+                                            <a href="#">Adventure tours</a>
+                                        </li>
+                                        <li>
+                                            <img class="submenu-thumbnail" src="https://picsum.photos/id/1038/32/32" alt="Cruises">
+                                            <a href="#">Cruises</a>
+                                        </li>
+                                        <li>
+                                            <img class="submenu-thumbnail" src="https://picsum.photos/id/1015/32/32" alt="Beach holidays">
+                                            <a href="#">Beach holidays</a>
+                                        </li>    -->
+                                    </ul>
+                                   {% endfor %}
+                                </li>
+                                <!-- <li class="submenu-top-item desc-list">
+                                    <a href="#" class="submenu-title">Holiday packages</a>
+                                    <ul class="submenu-list">
+                                        <li>
+                                            <a href="#">Families</a>
+                                            <span class="submenu-desc">Take advantage of our special holiday packages for families.</span>
+                                        </li>
+                                        <li>
+                                            <a href="#">Students</a>
+                                            <span class="submenu-desc">Take advantage of our special holiday packages for students.</span>
+                                        </li>
+                                        <li>
+                                            <a href="#">Couples</a>
+                                            <span class="submenu-desc">Take advantage of our special holiday packages for couples.</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="submenu-top-item icon-list">
+                                    <a href="#" class="submenu-title">Our services</a>
+                                    <ul class="submenu-list">
+                                        <li>
+                                            <i class="fas fa-plane-departure"></i>
+                                            <a href="#">Plane tickets</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-car"></i>
+                                            <a href="#">Car rental</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-luggage-cart"></i>
+                                            <a href="#">Luggage pickup</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-phone-alt"></i>
+                                            <a href="#">24/7 customer service</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-dollar-sign"></i>
+                                            <a href="#">30-day cancellation policy</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="submenu-top-item">
+                                    <a href="#" class="submenu-title">Last minute offers</a>
+                                    <ul class="submenu-list">
+                                        <li><a href="#">New York</a></li>
+                                        <li><a href="#">Stockholm</a></li>
+                                        <li><a href="#">Madrid</a></li>
+                                        <li><a href="#">Buenos Aires</a></li>
+                                        <li><a href="#">Tokyo</a></li>
+                                    </ul>
+                                </li> -->
+                            </ul><!-- End .submenu-top -->
+                          </li><!-- End .submenu-item-->
+                      {% else %}
+                      <!-- lev_2_item without nasted nav  -->
+                          <li class="submenu-item">
+                            {{ child_link.title | link_to: child_link.url }}
+                          </li>
+                    {% endif %}
+
+                    <!-- submenu  -->
+                    <!-- <li class="submenu-item">
+                        <a href="#" class="submenu-title">Trending destinations</a>
+                        <ul class="submenu-bottom">
+                            <li class="submenu-bottom-item">
+                                <figure>
+                                    <img src="https://picsum.photos/id/1016/640/260">
+                                    <figcaption><a href="#">Mountains</a></figcaption>
+                                </figure>
+                            </li>
+                            <li class="submenu-bottom-item">
+                                <figure>
+                                    <img src="https://picsum.photos/id/1040/640/260">
+                                    <figcaption><a href="#">Castles</a></figcaption>
+                                </figure>
+                            </li>
+                            <li class="submenu-bottom-item">
+                                <figure>
+                                    <img src="https://picsum.photos/id/1039/640/260">
+                                    <figcaption><a href="#">Waterfalls</a></figcaption>
+                                </figure>
+                            </li>
+                            <li class="submenu-bottom-item">
+                                <figure>
+                                    <img src="https://picsum.photos/id/164/640/260">
+                                    <figcaption><a href="#">Historical towns</a></figcaption>
+                                </figure>
+                            </li>
+                        </ul>
+                    </li> -->
+                    <!-- End .submenu-item -->
+                    {% endfor %}        
+              </ul>
+          </li>
+    {% else %}
+    <!-- without lev_1_nasted nav  -->
+          <li class="menu-item without_drop">
+            {{ link.title | link_to: link.url }}
+          </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</nav>
+
+
+<style>
+.see {
+  border: 1px solid red;
+}
+ul {
+    list-style-type: none;
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+.submenu-icon {
+    color: #111;
+}
+a:hover {
+    text-decoration: underline;
+}
+img {
+    max-width: 100%;
+}
+.menu {
+    background-color: darkslateblue;
+    z-index: 3;
+}
+.submenu {
+   border: 1px solid #ccc;
+   background: #f1e8f1;
+}
+.menu li {
+    padding: 10px;
+}
+.menu-icon {
+    color: white;
+    margin-left: 10px;
+    font-size: 14px;
+}
+/* Flexbox rules */
+.menu {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 90vw;
+    margin: 10px 5vw;
+    height: 60px;
+    position: relative;
+}
+.menu-item {
+    flex: 1;
+}
+.menu-item > a {
+    line-height: 40px;
+}
+.submenu {
+    width: 90vw;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+.submenu-item {
+    padding: 15px;
+}
+.submenu-top {
+    display: flex;
+    justify-content: space-around;
+}
+.submenu-bottom {
+    display: flex;
+}
+.submenu-bottom-item {
+    flex: 1;
+}
+/* Submenu general styling */
+.submenu-top li {
+    padding-left: 0;
+}
+.submenu a {
+    color: #111;
+}
+.submenu-top-item {
+    /* max-width: 33.333%; */
+}
+.submenu .submenu-title {
+    font-weight: bold;
+    color: darkslateblue;
+}
+.submenu .submenu-title:hover {
+    text-decoration: none;
+}
+.submenu-list,
+.submenu-bottom {
+    margin-top: 10px;
+}
+
+/* Submenu: Thumbnail list */
+.thumb-list .submenu-list > li {
+    display: flex;
+    align-items: center;
+}
+.submenu-thumbnail {
+    margin-right: 10px;
+}
+
+/* Submenu: Description list */
+.desc-list .submenu-list > li {
+    display: flex;
+    flex-direction: column;
+}
+.submenu-desc {
+    margin-top: 10px;
+    color: #555;
+}
+
+/* Submenu: Icon list */
+.submenu-icon {
+    width: 32px;
+}
+
+/* Submenu bottom */
+.submenu-bottom-title {
+    padding-left: 10px;
+}
+.submenu-bottom figcaption {
+    margin-top: 5px;
+    font-weight: bold;
+}
+.submenu-bottom a:hover {
+    text-decoration: none;
+}
+/* Hover rule */
+.submenu { 
+    display: none;
+}
+.menu-item:hover .submenu {
+    display: flex;
+}
+.menu-item:hover > a {
+    text-decoration: underline;
+}
+</style>
+
+
+
+
+{% schema %}
+{
+  "name": "Mega menu",
+  "class": "mega__menu",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable sticky header",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "nav_menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_giftProduct",
+      "label": "Show products in mega menus",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "gift_product",
+      "label": "Select product"
+    },
+    {
+      "type": "range",
+      "id": "menu_col_width",
+      "min": 100,
+      "max": 300,
+      "step": 2,
+      "unit": "px",
+      "label": "Menu column width",
+      "default": 180
+    },
+    {
+      "type": "checkbox",
+      "id": "mega_products",
+      "label": "Show first product in mega menus",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu",
+      "name": "Mega menu column",
+      "settings": [
+        
+      ]
+    }
+  ]
+}
+{% endschema %}
