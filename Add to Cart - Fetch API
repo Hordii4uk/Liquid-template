@@ -30,3 +30,117 @@ fetch call will fail with a bad request error.
   });
    
 })();
+
+
+
+
+/* other example */
+
+class Cart {
+
+  static async addProductToCart(id, quantity) {
+    let formData = {
+      'items': [
+        {
+          'id': id,
+          'quantity': quantity,
+        }],
+    };
+    return fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    }).then(response => {
+      return response.json();
+    }).catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  static async addProductAndShowCart(id, quantity) {
+    let formData = {
+      'items': [
+        {
+          'id': id,
+          'quantity': quantity,
+        }],
+    };
+    return fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    }).then(async (response) => {
+      await this.updateProductCart();
+      document.getElementById('cartPopup').classList.toggle('active');
+      return response.json();
+    }).catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  static async updateProduct(id, quantity = 0) {
+    document.querySelector('html').classList.add('loading');
+
+    let formData = new FormData();
+
+    formData.append(`updates[${id}]`, quantity.toString());
+    return fetch('/cart/update.js', {
+      method: 'POST',
+      body: formData,
+    }).then(response => {
+      document.querySelector('html').classList.remove('loading');
+
+      return response.json();
+    }).catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  static async updateProductCart() {
+    document.querySelector('html').classList.add('loading');
+    return fetch('/cart').then((response) => {
+      return response.text();
+    }).then((html) => {
+      let htmlDoc = (new DOMParser()).parseFromString(html, 'text/html');
+      if (document.getElementById('cart')) {
+        document.getElementById('cart').innerHTML = htmlDoc.getElementById('cart').innerHTML;
+      }
+      document.getElementById('cartPopup').innerHTML = htmlDoc.getElementById('cartPopup').innerHTML;
+      document.getElementById('cartIcon').innerHTML = htmlDoc.getElementById('cartIcon').innerHTML;
+      document.querySelector('html').classList.remove('loading');
+
+      this.initCartEvents();
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+  static async initCartEvents() {
+    if (document.getElementById('shopify-section-header')) {
+      document.querySelectorAll('[data-cart-product-variant-id]').forEach((el) => {
+        el.productId = parseInt(el.getAttribute('data-cart-product-variant-id'));
+        el.quantity = parseInt(el.querySelector('[data-cart-input]').value);
+        el.querySelector('[data-cart-remove]').addEventListener('click', async () => {
+          await this.updateProduct(el.productId);
+          await this.updateProductCart();
+        });
+        el.querySelector('[data-cart-increase]').addEventListener('click', async () => {
+          await this.updateProduct(el.productId, el.quantity + 1);
+          await this.updateProductCart();
+        });
+        el.querySelector('[data-cart-decrease]').addEventListener('click', async () => {
+          if (el.quantity <= 1) {
+            return false;
+          }
+          await this.updateProduct(el.productId, el.quantity - 1);
+          await this.updateProductCart();
+        });
+
+      });
+    }
+  }
+}
