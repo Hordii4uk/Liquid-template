@@ -33,6 +33,12 @@ document.body.addEventListener('click', ()=> {
   console.log(ev.getComputedStyle);
 })
 
+// check scroll up or down
+window.onscroll = function(e) {
+// print "false" if direction is down and "true" if up
+console.log(this.oldScroll > this.scrollY);
+this.oldScroll = this.scrollY;
+}
 // addEventListener for more 1 elem:
 [qty_input, qty_decrease].map(elem => elem.addEventListener('click', e=>{
   console.log('your cliked on', elem);
