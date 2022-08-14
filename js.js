@@ -3,6 +3,7 @@ document.body.addEventListener('click', ()=> {
     console.dir(event.target);
 })
 
+
 // check if url match striing:
 // 1 method 
 let my_url = window.location.href;
@@ -20,6 +21,7 @@ if (getPage.match('account')) {
   }
 }
 
+
 // get element style:
 // 1 method
 let link = document.querySelector('a');
@@ -33,16 +35,32 @@ document.body.addEventListener('click', ()=> {
   console.log(ev.getComputedStyle);
 })
 
+
 // check scroll up or down
 window.onscroll = function(e) {
 // print "false" if direction is down and "true" if up
 console.log(this.oldScroll > this.scrollY);
 this.oldScroll = this.scrollY;
 }
+
+
 // addEventListener for more 1 elem:
 [qty_input, qty_decrease].map(elem => elem.addEventListener('click', e=>{
   console.log('your cliked on', elem);
 }))
+
+
+// MutationObserver - watch for changes being made to the DOM tree
+let observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(){
+      console.log(qty_input.value);
+    });
+  });
+  // Start observing the target node
+  observer.observe(elements, {
+    attributes: true
+  }); // observer config
+
 
 // async fetch
 const showPosts = async () => {
