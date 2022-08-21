@@ -35,6 +35,10 @@ document.body.addEventListener('click', ()=> {
   console.log(ev.getComputedStyle);
 })
 
+//get scroll value
+window.addEventListener('scroll',(event) => {
+  console.log(Math.max(document.body.scrollTop, document.documentElement.scrollTop))
+});
 
 // check scroll up or down
 window.onscroll = function(e) {
