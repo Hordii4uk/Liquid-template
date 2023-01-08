@@ -53,6 +53,12 @@ this.oldScroll = this.scrollY;
   console.log('your cliked on', elem);
 }))
 
+(function listenItems() {
+  const els = Array.prototype.slice.call(document.querySelectorAll('input[data-additional-item]'));
+  els.forEach(function (el) { el.addEventListener('change', testCheck); });
+})();
+function testCheck() { console.log('test func is worked') };
+
 
 // MutationObserver - watch for changes being made to the DOM tree
 let observer = new MutationObserver(function(mutations) {
