@@ -55,6 +55,13 @@ this.oldScroll = this.scrollY;
   console.log('your cliked on', elem);
 }))
 // 2
+let items = document.querySelectorAll('.productgrid--item');
+items.forEach(function(item) {
+  item.addEventListener('click', function(e) {
+      console.log(e.target)
+    })
+  })
+// 3
 (function listenItems() {
   const els = Array.prototype.slice.call(document.querySelectorAll('input[data-additional-item]'));
   els.forEach(function (el) { el.addEventListener('change', testCheck); });
